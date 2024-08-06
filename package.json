@@ -1,0 +1,22 @@
+{
+    "name": "vali-js",
+    "version": "1.0.0",
+    "description": "Una libreria creada para validar formularios con JavaScript",
+    "main": "src/index.js",
+    "keywords": [
+      "validation",
+      "forms",
+      "javascript",
+      "vali-js"
+    ],
+    "author": "Ayron Developer",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/AyronDeveloper/vali-js.git"
+    },
+    "bugs": {
+      "url": "https://github.com/AyronDeveloper/vali-js/issues"
+    },
+    "homepage": "https://vali.ayrondeveloper.com/"
+}
