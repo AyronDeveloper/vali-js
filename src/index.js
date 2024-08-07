@@ -448,7 +448,11 @@ const isColor=(value)=>{
 const formStart=()=>{
     count=0
 }
-
+/**
+ * 
+ * @param {any} val 
+ * @param {array} validations 
+ */
 const formVali=(val,validations)=>{
     result=true
     errorMessage=""
