@@ -37,7 +37,7 @@ const input=document.getElementById("input")
 
 Para validar este formulario se realiza de la siguiente manera.
 
-##formStart()
+## formStart()
 La función `formStart()` sirve para iniciar el proceso de validación.
 
 ```javascript
@@ -48,7 +48,7 @@ form1.addEventListener("submit",(e)=>{
 })
 ```
 
-##formVali()
+## formVali()
 La función `formVali()` realiza la validación de un campo. Toma dos parámetros: el valor del input y un array con las validaciones deseadas.
 
 ```javascript
@@ -64,7 +64,7 @@ form1.addEventListener("submit",(e)=>{
 De esta forma analizara lo que introduzca por el input.
 `required` es una de las validaciones, este verifica que el input no se encuntre vacio.
 
-##formError()
+## formError()
 La función `formError()` muestra un mensaje de error si `formVali()` falla. Recibe dos parámetros: el nombre de la validación y el mensaje de error.
 
 ```javascript
@@ -80,7 +80,7 @@ form1.addEventListener("submit",(e)=>{
 })
 ```
 
-##resultError()
+## resultError()
 La función `resultError()` te permite ejecutar acciones si alguna validación falla.
 
 ```javascript
@@ -95,7 +95,7 @@ La función `resultError()` te permite ejecutar acciones si alguna validación f
 	}
 ```
 
-##formFinal()
+## formFinal()
 La función `formFinal()` verifica si no hay errores en el formulario completo.
 
 ```javascript
@@ -189,7 +189,7 @@ form1.addEventListener("submit",(e)=>{
     })
 ```
 
-##customVali()
+## customVali()
 La función `customVali()`  permite crear validaciones personalizadas sin usar formVali(). Debes pasarle un nombre, una función que retorne true o false, y un valor booleano opcional.
 
 ```javascript
@@ -220,7 +220,7 @@ let custom_error=vali.formError("personalizado","La suma no puede ser 10")
 Se puede conbinar con `formError()` y `resultError()`.
 
 
-##globalForm()
+## globalForm()
 La función `globalForm()` se utiliza cuando queremos realizar una validacion fuera del submit, por ejemplo un evento change.
 
 ```html
@@ -258,7 +258,7 @@ file.addEventListener("change",(e)=>{
 })
 ```
 
-##globalFinal()
+## globalFinal()
 La función `globalFinal()`  validara y se encargara que todos los eventos o formulario vinculado por el identificador de `globalForm()` no hayan fallado. siguiendo el mismo ejemplo del globalForm()
 
 ```javascript
