@@ -2,8 +2,6 @@
 
 JS-VALI es una librería de JavaScript diseñada para validar formularios con una amplia gama de validaciones.
 
-Estoy trabajando en un sitio web con más detalles, ¡así que paciencia!
-
 ## Instalación
 Utiliza el comando NPM para instalar la librería:
 

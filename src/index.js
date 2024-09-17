@@ -327,7 +327,7 @@ const sizeFile=(value, more, size, UA=null)=>{
             let sizeKB=FileSize/bytes
 
         if(more=="min"){
-            if(size>=sizeKB){
+            if(size<=sizeKB){
                 result=true
                 error=false
             }else{
@@ -337,7 +337,7 @@ const sizeFile=(value, more, size, UA=null)=>{
             }
         }
         else if(more=="max"){
-            if(size<=sizeKB){
+            if(size>=sizeKB){
                 result=true
                 error=false
             }else{
@@ -348,7 +348,7 @@ const sizeFile=(value, more, size, UA=null)=>{
         }
     }else{
         if(more=="min"){
-            if(size>=FileSize){
+            if(size<=FileSize){
                 result=true
                 error=false
             }else{
@@ -358,7 +358,7 @@ const sizeFile=(value, more, size, UA=null)=>{
             }
         }
         else if(more=="max"){
-            if(size<=FileSize){
+            if(size>=FileSize){
                 result=true
                 error=false
             }else{
