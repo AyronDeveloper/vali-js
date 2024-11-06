@@ -64,9 +64,6 @@ const selectRadio=(value)=>{
     }
 }
 const selectCheckBox=(value,limit=null,len=null)=>{
-    //console.log(limit)
-    //console.log(len)
-    //console.log(value)
 
     const check=(array)=>{
         var arrayLen
@@ -79,8 +76,6 @@ const selectCheckBox=(value,limit=null,len=null)=>{
         }
 
         if(limit!=null && len!=null){
-            //console.log(arrayLen)
-            //console.log("No estan vacio limit ni len")
             for(var i=0;i<arrayLen;i++){
                 if(array[i].checked){
                     count++
@@ -92,7 +87,6 @@ const selectCheckBox=(value,limit=null,len=null)=>{
                 return count<=len?true:false
             }
         }else{
-            //console.log("Estan vacio limit ni len")
             for(var i=0;i<arrayLen;i++){
                 if(array[i].checked){
                     return true
@@ -272,11 +266,9 @@ const valitedDate=(value)=>{
     if(formatDate.test(value)){
         const date=new Date(value)
         if(!isNaN(date) || date.toString()!="Invalid Date"){
-            //console.log(date.toString())
             result=true
             error=false
         }else{
-            //console.log(date.toString())
             count++
             result=false
             error=true
@@ -414,23 +406,34 @@ const isAlpha=(value)=>{
     }
 
 }
-const notUse=(value, invalid)=>{
-    //console.log(invalid)
-    const escaped=invalid.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&")
-    const regex=new RegExp(`[${escaped}]`)
+const notUse=(value,invalid)=>{
+
+    const patronesEscapados=invalid.map(caracter=>{
+        
+        if(caracter==="0-9"){
+            return "0-9"
+        }else if(caracter==="A-Z"){
+            return "A-Z"
+        }else if(caracter==="a-z"){
+            return "a-z"
+        }else if(caracter==="\\s"){
+            return "\\s"
+        }
+        return caracter.replace(/[-\/\\^$.*+?()[\]{}|]/g,'\\$&')
+    })
+
+    const regex=new RegExp(`[${patronesEscapados.join('')}]`)
+
     if(!regex.test(value)){
-        //console.log("No tiene lo solcitado")
         result=true
         error=false
     }else{
-        //console.log("Tiene lo solcitado")
         count++
         result=false
         error=true
     }
 }
 const isColor=(value)=>{
-    //console.log(value)
     const regex=/^#[0-9A-Fa-f]{6}$/
     if(regex.test(value)){
         result=true
@@ -589,7 +592,6 @@ const formVali=(val,validations)=>{
 }
 
 const customVali=(name,validation,result=true)=>{
-    //console.log(validation)
     
     validators=name
 
@@ -634,107 +636,67 @@ const formError=(vali, message=null)=>{
 const resultError=(functionFailed=null,functionSucces=null)=>{
     if(functionFailed!=null && functionFailed!=null){
         if(result){
-            //SOLO QUIERO QUE SE EJECUTE LA PRIMERA FUNCION CALLBACK
             functionFailed()
         }else{
-            //SOLO QUIERO QUE SE EJECUTE LA SEGUNDA FUNCION CALLBACK
             functionSucces()
         }
 
     }else{
-        return result?false:true
+        return !result?true:false
     }
 }
 
 const formFinal=()=>{
-    if(count==0){
-        //this.#countGlobal.push(true)
-        return true
-    }else{
-        //this.#countGlobal.push(false)
-        return false
-    }
+
+    return count==0?true:false
 
 }
 
-const globalForm=(identifier=null, name="")=>{
-    if(identifier!=null){
-        let arrayExists=countGlobal.find(data=>data[0]==identifier)
+const globalStart=(identifier,values)=>{
 
-        if(arrayExists){
-            let deleteIndice
+    let objValues={}
 
-            if(name!=""){
-                if(arrayExists.includes(`${name} true`)){
-                    deleteIndice=`${name} true`
-                }else if(arrayExists.includes(`${name} false`)){
-                    deleteIndice=`${name} false`
-                }
-                
-                let indice=arrayExists.indexOf(deleteIndice)
-                arrayExists.splice(indice, 1)
-                //console.log(arrayExists)
+    values.forEach(val=>{
+        objValues[val]=`${val} false`
+    })
 
-                arrayExists.push(count==0?(`${name} true`).trim():(`${name} false`).trim())
-                //console.log(arrayExists)
+    sessionStorage.setItem(identifier,JSON.stringify(objValues))
+}
 
-            }else{
-                arrayExists.push(count==0?(`true`).trim():(`false`).trim())
-            }
-        }else{
-            countGlobal.push([identifier,count==0?(`${name} true`).trim():(`${name} false`).trim()])
-        }
-        //console.log(this.#countGlobal)
+const globalForm=(identifier, name)=>{
+    let result=false
 
+    if(identifier!=null || identifier!=""){
+
+        const storage=JSON.parse(sessionStorage.getItem(identifier))
         if(count==0){
-            //this.#countGlobal.push(true)
-            return true
+            storage[name]=`${name} true`
+            result=true
         }else{
-            //this.#countGlobal.push(false)
-            return false
+            storage[name]=`${name} false`
+            result=false
         }
 
+        sessionStorage.setItem(identifier,JSON.stringify(storage))
     }
+
+    return result
 }
 
 const globalFinal=(identifier)=>{
-    //console.log(this.#countGlobal)
+    let result=false
 
-    const arrayFind=countGlobal.find(data=>data[0]==identifier)
+    if(identifier!=null && identifier!=""){
+        const storage=sessionStorage.getItem(identifier)
 
-    if(!arrayFind.some(array=>array.includes("false"))){
-        countGlobal=countGlobal.filter(data=>data[0]!=identifier)
-        //console.log(this.#countGlobal)
-        return true
-    }else{
-        var findFalse=[]
-        var findTrue=[]
+        const array=Object.values(JSON.parse(storage))
 
-        arrayFind.forEach((array, index)=>{
-            if(array=="false"){
-                findFalse.push(index)
-            }
-            if(array=="true"){
-                findTrue.push(index)
-            }
-        })
-
-        if(findFalse!=0){
-            findFalse.forEach(array=>{
-                arrayFind.splice(array, 1)
-            })
+        if(!array.some(array=>array.includes("false"))){
+            result=true
         }
-
-        if(findTrue.length!=0){
-            findTrue.forEach(array=>{
-                arrayFind.splice(array, 1)
-            })
-        }
-
-        //this.#countGlobal=this.#countGlobal.filter(data=>data[0]!=identifier)
-        //console.log(this.#countGlobal)
-        return false
     }
+
+    return result
 }
 
 
@@ -745,6 +707,7 @@ export default{
     formError,
     resultError,
     formFinal,
+    globalStart,
     globalForm,
     globalFinal
 }
