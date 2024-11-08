@@ -10,8 +10,10 @@ declare module 'js-vali' {
     export function resultError(functionFailed?: () => void, functionSuccess?: () => void): boolean;
     
     export function formFinal(): boolean;
+
+    export function globalStart(identifier: string, name: string[]): void;
     
-    export function globalForm(identifier?: string, name?: string): boolean;
+    export function globalForm(identifier: string, name: string): boolean;
     
     export function globalFinal(identifier: string): boolean;
 }

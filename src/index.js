@@ -1,5 +1,4 @@
 let count=0
-let countGlobal=[]
 let result=true
 let validators=""
 
@@ -11,6 +10,36 @@ const voidMessage=(msg)=>{
     }else{
         return false
     }
+}
+const generarCodigo=(result)=>{
+    const lower=result?"acegikmoqsuwy":"bdfhjlnprtvxz"
+    const upper=result?"BDFHJLNPRTVXZ":"ACEGIKMOQSUWY"
+    const number=result?"02468":"13579"
+    const symbol="!@#$%^&*()_-+=?><[]"
+
+    const cifrado=`${lower}${number}${upper}${symbol}`
+
+    let codigo=""
+    let longitud=Math.floor(Math.random()*(16-10))+10
+    for(let i=0;i<longitud;i++){
+        const randomIndex=Math.floor(Math.random()*cifrado.length)
+        codigo+=cifrado[randomIndex]
+    }
+    return codigo;
+}
+const identificarF=(codigo)=>{
+    const cifrado="bdfhjlnprtvxz13579!@#$%^&*()_-+=?><[]ACEGIKMOQSUWY"
+    const f=cifrado.split("")
+    
+    for(let i=0;i<codigo.length;i++){
+        const letra=codigo[i]
+        
+        if(!f.includes(letra)){
+            return false
+        }
+    }
+    
+    return true
 }
 
 
@@ -657,7 +686,7 @@ const globalStart=(identifier,values)=>{
     let objValues={}
 
     values.forEach(val=>{
-        objValues[val]=`${val} false`
+        objValues[val]=`${generarCodigo(false)}`
     })
 
     sessionStorage.setItem(identifier,JSON.stringify(objValues))
@@ -670,10 +699,10 @@ const globalForm=(identifier, name)=>{
 
         const storage=JSON.parse(sessionStorage.getItem(identifier))
         if(count==0){
-            storage[name]=`${name} true`
+            storage[name]=`${generarCodigo(true)}`
             result=true
         }else{
-            storage[name]=`${name} false`
+            storage[name]=`${generarCodigo(false)}`
             result=false
         }
 
@@ -683,17 +712,36 @@ const globalForm=(identifier, name)=>{
     return result
 }
 
-const globalFinal=(identifier)=>{
+const globalFinal=(identifier,option="")=>{
     let result=false
 
     if(identifier!=null && identifier!=""){
         const storage=sessionStorage.getItem(identifier)
 
-        const array=Object.values(JSON.parse(storage))
+        let objeto=JSON.parse(storage)
 
-        if(!array.some(array=>array.includes("false"))){
+        const claves=Object.keys(objeto)
+        const values=Object.values(objeto)
+
+        var error=0
+        values.forEach(cod=>{
+            if(identificarF(cod)){
+                error++
+            }
+        })
+
+        if(error==0){
             result=true
+
+            if(option=="reset"){
+                claves.forEach(key=>{
+                    objeto[key]=`${generarCodigo(false)}`
+                })
+
+                sessionStorage.setItem(identifier, JSON.stringify(objeto));
+            }
         }
+
     }
 
     return result
