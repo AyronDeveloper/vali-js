@@ -475,16 +475,6 @@ vali.formVali(input.value,["isURL"])
 
 ------------
 
-- isAlpha: Checks that the value contains only letters (uppercase or lowercase).
-
-```javascript
-const input=document.getElementById("input")
-
-vali.formVali(input.value,["isAlpha"])
-```
-
-------------
-
 - notUse: Checks that the value does not contain any characters from a specified list.
 
 ```javascript

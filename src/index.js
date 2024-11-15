@@ -43,7 +43,6 @@ const identificarF=(codigo)=>{
 }
 
 
-/* */
 const required=(value)=>{
     if(value.trim()!=""){
         result=true
@@ -55,14 +54,15 @@ const required=(value)=>{
     }
 }
 const isString=(value)=>{
-    if(typeof value == "string"){
+    const regex=/^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$/
+    if(regex.test(value)){
         result=true
         error=false
     }else{
         count++
         result=false
         error=true
-    }
+    }  
 }
 const selectRadio=(value)=>{
         
@@ -165,13 +165,13 @@ const isFloat=(value)=>{
         error=true
     }
 }
-const isBoolean=(value,result=null)=>{
+const isBoolean=(value,bool=null)=>{
     if(typeof value=="boolean"){
         result=true
         error=false
 
-        if(result!=null){
-            const boolean=JSON.parse(result)
+        if(bool!=null){
+            const boolean=JSON.parse(bool)
             if(boolean){
                 if(value){
                     result=true
@@ -225,7 +225,6 @@ const isArray=(value,limit=null,len=null)=>{
         error=false
 
         if(limit!=null && len!=null){
-            console.log(value)
             if(limit=="min"){
                 if(value.length>=len){
                     result=true
@@ -423,18 +422,6 @@ const isURL=(value)=>{
         error=true
     }
 }
-const isAlpha=(value)=>{
-    const regex=/^[A-Za-z]+$/
-    if(regex.test(value)){
-        result=true
-        error=false
-    }else{
-        count++
-        result=false
-        error=true
-    }
-
-}
 const notUse=(value,invalid)=>{
 
     const patronesEscapados=invalid.map(caracter=>{
@@ -598,11 +585,6 @@ const formVali=(val,validations)=>{
                 //VALIDA SI EL FORMATO DE URL ES CORRECTO
                 case "isURL":
                     isURL(val)
-                    break;
-
-                //VALIDA CARACTERES ALFABETICOS
-                case "isAlpha":
-                    isAlpha(val)
                     break;
                     
                 case "notUse":
