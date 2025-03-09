@@ -1,6 +1,6 @@
 {
     "name": "js-vali",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Una libreria creada para validar formularios con JavaScript",
     "main": "src/index.js",
     "types": "types/index.d.ts",
