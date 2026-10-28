@@ -1,496 +1,269 @@
 # JS-VALI
 
-JS-VALI is a JavaScript library designed to validate forms with a wide range of validations.
+### Una librería de validaciones para JavaScript y TypeScript.
+JS-VALI permite validar datos mediante reglas reutilizables, comprobar formularios y definir validaciones personalizadas.
 
-## Install
-Use the NPM command to install the library:
+
+## Instalación
+Instala la librería desde npm:
 
 ```bash
 npm i js-vali
 ```
-Then import it into your project:
 
-	import  vali  from 'js-vali'
+Para instalar una versión específica.
 
-## Use
-Let's look at a basic example of how to use the library with a simple form.
-
-```html
-<form id="form1">
-	<input type="text" id="input">
-	<button>Submit</button>
-</form>
+```bash
+npm i js-vali@2.0.0
 ```
 
-Now in the Javascript.
+## Importación
 
 ```javascript
-const form1=document.getElementById("form1")
-const input=document.getElementById("input")
+import { Rules, Vali, jsVali } from "js-vali";
 ```
 
-To validate this form, proceed as follows.
+La librería exporta tres elementos principales:
+- Rules: contiene los métodos de validación.
+- Vali: permite crear instancias independientes.
+- jsVali: proporciona una instancia compartida lista para utilizar.
 
-## formStart()
-The `formStart()` function is used to start the validation process.
+
+## Uso básico
+### Validaciones individuales
+Puedes utilizar Rules directamente:
 
 ```javascript
-form1.addEventListener("submit",(e)=>{
-	e.preventDefault()
-        
-	vali.formStart()
-})
+import { Rules } from "js-vali";
+
+console.log(Rules.required("Hola")); // true
+console.log(Rules.isEmail("correo@ejemplo.com")); // true
+console.log(Rules.isNumber("123")); // true
+console.log(Rules.isBoolean("true")); // true
 ```
 
-## formVali()
-The `formVali()` function performs field validation. It takes two parameters: the input value and an array with the desired validations.
+Cada regla devuelve un booleano que indica si el valor cumple la condición.
+
+## Validación con jsVali
 
 ```javascript
-form1.addEventListener("submit",(e)=>{
-	e.preventDefault()
-	
-	vali.formStart()
-	
-	vali.formVali(input.value,["required"])
-})
-```
+import { jsVali } from "js-vali";
 
-## formError()
-The `formError()` function displays an error message if `formVali()` fails. It takes two parameters: the name of the validation and the error message.
+jsVali.start();
 
-```javascript
-form1.addEventListener("submit",(e)=>{
-	e.preventDefault()
-	
-	vali.formStart()
-	
-	vali.formVali(input.value,["required"])
-	
-	let error=vali.formError("required","Empty Field")
-    console.log(error)//if it fails it returns "Empty Field", if it is correct it returns nothing
-})
-```
-
-## resultError()
-The `resultError()` function allows you to execute actions if any validation fails.
-
-```javascript
-	if(vali.resultError()){ 
-        // if there is a failure in validations
-        // you could make an input change its border to red
-		input.style.borderColor="red"
-	}else{
-        //if it doesn't fail
-        //shows the input without the red border
-		input.style.borderColor="black"
-	}
-```
-
-## formFinal()
-The `formFinal()` function checks the entire form for errors.
-
-```javascript
-form1.addEventListener("submit",(e)=>{
-	e.preventDefault()
-	
-	vali.formStart()
-	
-	vali.formVali(input.value,["required"])
-	
-	let error=vali.formError("required","Empty Field")
-    console.log(error)//if it fails it returns "Empty Field", if it is correct it returns nothing
-	
-	if(vali.resultError()){
-        // if there is a failure in validations
-        // you could make an input change its border to red
-		input.style.borderColor="red"
-	}else{
-        //if it doesn't fail
-        //shows the input without the red border
-		input.style.borderColor="black"
-	}
-	
-	if(vali.formFinal()){
-		console.log("Fomulario sin errores")
-	}else{
-		console.log("Formulario con errores")
-	}
-})
-```
-
-If you have multiple inputs, simply repeat the validation structure for each one:
-HTML
-
-```html
-    <form id="form1">
-        <input type="text" id="input"><br>
-        <input type="text" id="input2"><br>
-        <button>Submit</button>
-    </form>
-```
-
-JavaScript
-
-```javascript
-form1.addEventListener("submit",(e)=>{
-        e.preventDefault()
-
-        vali.formStart()
-
-
-        vali.formVali(input.value,["required"])
-
-        let error1=vali.formError("required","Campo Vacio")
-
-        if(vali.resultError()){
-            // if there is a failure in validations
-            // you could make an input change its border to red
-            input.style.borderColor="red"
-        }else{
-            //if it doesn't fail
-            //shows the input without the red border
-            input.style.borderColor="black"
-        }
-
-
-
-        vali.formVali(input2.value,["required","isNumber"])
-        let error2
-
-        error2=vali.formError("required","Campo Vacio")
-        error2=vali.formError("isNumber","Debe ser un numero")
-
-        if(vali.resultError()){
-            input.style.borderColor="red"
-        }else{
-            input.style.borderColor="black"
-        }
-
-
-        if(vali.formFinal()){
-            console.log("Fomulario sin errores")
-        }else{
-            console.log("Formulario con errores")
-        }
-    })
-```
-
-## customVali()
-The `customVali()` function allows you to create custom validations without using formVali(). You must pass it a name, a function that returns true or false, and an optional boolean value.
-
-```javascript
-function suma(n1,n2){
-            var total=n1+n2
-
-            if(total==10){
-                return true
-            }else{
-                return false
-            }
-        }
-
-vali.customVali("personalizado",suma(5,5),true)
-
-let custom_error=vali.formError("personalizado","Debe ser 10")
-
-
-vali.customVali("personalizado",suma(5,5),false)
-
-let custom_error=vali.formError("personalizado","La suma no puede ser 10")
-```
-
-Can be combined with `formError()` and `resultError()`.
-
-## globalForm()
-The `globalForm()` function is used when we want to perform a validation outside of the submit, for example a change event.
-
-```html
-<div>
- 	<input type="file" id="file">
-</div>
-<form id="form_global">
- 	<input type="text" id="input"><br>
- 	<button>Submit</button>
- </form>
-```
-
-If we used `formFinal()` it would only analyze the input text and would not take into account the input file, to get it to take into account the input file `globalForm()` is used, this only needs two parameters, the first is an identifier with which we can locate it and the second a name that describes what it is going to do.
-
-```javascript
-const file=document.getElementById("file")
-const input=document.getElementById("input")
-const form_global=document.getElementById("form_global")
-
-file.addEventListener("change",(e)=>{
-       vali.formStart()
-
-      var dataFile=e.target.files[0]
-
-      vali.formVali(dataFile,["uploadFile"])
-
-     var errorFile=vali.formError("uploadFile","No se cargo la imagen")
-     console.log(errorFile)
-
-    if(vali.globalForm("firstForm","changeFile")){
+jsVali.validation("correo@ejemplo.com", {
+    required: {
+        error: "El correo es obligatorio"
+    },
+    isEmail: {
+        error: "El correo no es válido"
     }
-})
+});
+
+console.log(jsVali.getValiError()); // true
+console.log(jsVali.getMsgError());  // ""
+console.log(jsVali.resultVali());   // true
 ```
 
-## globalFinal()
-The `globalFinal()` function will validate and ensure that all events or forms linked by the `globalForm()` identifier have not failed, following the same example as globalForm()
+Métodos disponibles en Vali:
+
+| Método | Descripción |
+|---|---|
+| `start()` | Inicia una validación y reinicia el estado. |
+| `validation(value, validations)` | Ejecuta las reglas indicadas. |
+| `custom(condition, vali, error)` | Comprueba una condición personalizada. |
+| `getValiError()` | Devuelve el resultado de la última validación. |
+| `getMsgError()` | Devuelve el último mensaje de error. |
+| `resultVali()` | Indica si hubo fallos durante el proceso actual. |
+||
+
+Debes llamar a start() antes de ejecutar validation().
+
+## Crear una instancia independiente
+Puedes crear validadores separados para gestionar diferentes procesos:
 
 ```javascript
-form_global.addEventListener("submit",(e)=>{
-        e.preventDefault()
+import { Vali } from "js-vali";
 
-        vali.formStart()
+const validator = new Vali();
 
-        vali.formVali(input.value,["required"])
+validator.start();
 
+validator.validation("usuario123", {
+    required: {
+        error: "El campo es obligatorio"
+    },
+    isString: {
+        error: "El valor debe ser una cadena"
+    }
+});
 
-        if(vali.resultError()){
-            input.style.borderColor="red"
-        }else{
-            input.style.borderColor="black"
-        }
-
-        vali.globalFinal("firstForm")
-
-        
-        if(vali.globalFinal("firstForm")){
-            console.log("No fallaron los eventos change y submit")
-        }else{
-            console.log("fallo el evento change o sumbit o los dos eventos")
-        }
- })
+console.log(validator.resultVali());
+console.log(validator.getMsgError());
 ```
 
-## Validations available
-Below is a list of the validations available in js-vali:
+Cada instancia mantiene su propio estado.
 
-- required: Please check that the field is not empty.
+## Validaciones personalizadas
+Utiliza custom() para comprobar condiciones específicas.
 
 ```javascript
-const input=document.getElementById("input")
+import { jsVali } from "js-vali";
 
-vali.formVali(input.value,["required"])
+const password = "abc123";
+const confirmPassword = "abc123";
+
+jsVali.start();
+
+jsVali.custom(
+    password === confirmPassword,
+    true,
+    "Las contraseñas no coinciden"
+);
+
+console.log(jsVali.getValiError());
+console.log(jsVali.getMsgError());
+console.log(jsVali.resultVali());
 ```
 
-------------
+El primer argumento es la condición que quieres comprobar, el segundo es el valor esperado y el tercero es el mensaje de error opcional.
 
-- isString: Verifies that the value is a text string.
+## Reglas disponibles
+La clase Rules incluye los siguientes métodos:
+
+| Regla | Descripción |
+|---|---|
+| `required(value)` | Comprueba que el valor no sea nulo, indefinido o una cadena vacía. |
+| `isString(value)` | Comprueba si el valor es una cadena. |
+| `isAlpha(value)` | Comprueba si contiene letras y espacios simples entre palabras. |
+| `selectRadio(value)` | Comprueba si hay un botón de opción seleccionado. |
+| `selectCheckBox(boxes, params)` | Valida la cantidad de casillas seleccionadas. |
+| `isNumber(value)` | Comprueba si el valor representa un número finito. |
+| `isInteger(value)` | Comprueba si el valor representa un entero. |
+| `isDecimal(value)` | Comprueba si el valor representa un número no entero. |
+| `isBoolean(value)` | ComAcepta booleanos y las cadenas "true" o "false". |
+| `lenMin(value, params)` | Comprueba la longitud mínima. |
+| `lenMax(value, params)` | Comprueba la longitud máxima. |
+| `isArray(value)` | Comprueba si el valor es un array. |
+| `differentTo(value, params)` | Comprueba si el valor es diferente del indicado. |
+| `equalTo(value, params)` | Comprueba si el valor es igual al indicado. |
+| `isEmail(value)` | Comprueba el formato básico de un correo electrónico. |
+| `valitedDate(value))` | Comprueba una fecha válida en formato YYYY-MM-DD. |
+| `uploadFile(value)` | Comprueba si se ha proporcionado un archivo o una colección válida. |
+| `sizeFile(value, params)` | Comprueba el tamaño de los archivos. |
+| `typeFile(value, params)` | Comprueba los tipos MIME permitidos. |
+| `isURL(value)` | Comprueba si es una URL HTTP o HTTPS válida. |
+| `notUse(value, params)` | Comprueba que el texto no contenga expresiones prohibidas. |
+| `isColor(value)` | Comprueba si el navegador reconoce el valor como un color CSS. |
+||
+
+Consulta las declaraciones TypeScript incluidas en el paquete para conocer los parámetros disponibles para cada regla.
+
+## Ejemplos de validaciones
+### Longitud mínima y máxima
 
 ```javascript
-const input=document.getElementById("input")
+import { Rules } from "js-vali";
 
-vali.formVali(input.value,["isString"])
+console.log(Rules.lenMin("usuario", { min: 3 }));
+console.log(Rules.lenMax("usuario", { max: 20 }));
 ```
 
-------------
-
-- selectRadio: Checks that at least one option in a group of radio buttons is selected.
-
+### Comparar valores
 ```javascript
-const radio=document.querySelectorAll(".radio")
+import { Rules } from "js-vali";
 
-vali.formVali(radio,["selectRadio"])
+console.log(Rules.equalTo("123", { to: 123 }));
+console.log(Rules.differentTo("admin", { to: "usuario" }));
 ```
 
-------------
+Estas dos reglas utilizan comparaciones no estrictas (== y !=).
 
-- selectCheckBox: Checks that at least one option in a group of checkboxes is selected. You can include limits (min and max) for the number of checkboxes selected.
-
+### Seleccionar casillas
 ```javascript
-const checkbox=document.querySelectorAll(".checkbox")
-// min o max : indica el minimo o maximo de casillas marcadas
-// 3 : si es minimo 3 casillas o si maximo 3 casillas
-vali.formVali(checkbox,["selectCheckBox|min|3"])
-// o 
-vali.formVali(checkbox,["selectCheckBox"])
+import { Rules } from "js-vali";
+
+const boxes = document.querySelectorAll<HTMLInputElement>(
+    'input[name="intereses"]'
+);
+
+const valid = Rules.selectCheckBox(boxes, {
+    min: 1,
+    max: 3
+});
+
+console.log(valid);
 ```
 
-------------
-
-- isNumber: Verifies that the value is a number.
-
+### Validar archivos
 ```javascript
-const input=document.getElementById("input")
+import { Rules } from "js-vali";
 
-vali.formVali(input.value,["isNumber"])
+const input = document.querySelector<HTMLInputElement>("#archivo");
+
+if (input?.files) {
+    console.log(Rules.uploadFile(input.files));
+
+    console.log(
+        Rules.sizeFile(input.files, {
+            max: 2,
+            unit: "MB"
+        })
+    );
+
+    console.log(
+        Rules.typeFile(input.files, {
+            types: ["image/png", "image/jpeg"]
+        })
+    );
+}
 ```
 
-------------
+Las validaciones de archivos necesitan las APIs correspondientes del navegador
 
-- isInteger: Verifies that the value is an integer.
+## Uso en el navegador
+La distribución UMD puede utilizarse mediante una etiqueta script:
 
-```javascript
-const input=document.getElementById("input")
+```html
+<script src="node_modules/js-vali/dist/js-vali.min.js"></script>
 
-vali.formVali(input.value,["isInteger"])
+<script>
+    const { Rules, Vali, jsVali } = JsVali;
+
+    console.log(Rules.required("Hola"));
+</script>
 ```
 
-------------
+Este ejemplo presupone que el archivo UMD expone el objeto global JsVali.
 
-- isFloat: Verifies that the value is a decimal number.
+En producción, asegúrate de servir el archivo desde una ruta pública válida.
 
-```javascript
-const input=document.getElementById("input")
 
-vali.formVali(input.value,["isFloat"])
+## TypeScript
+La librería incluye declaraciones de tipos para mejorar el autocompletado y detectar errores durante el desarrollo.z
+
+```typescript
+import { Rules, Vali, jsVali } from "js-vali";
+import type { Validation } from "js-vali";
+
+const validations: Validation = {
+    required: {
+        error: "El campo es obligatorio"
+    }
+};
 ```
 
-------------
+## Consideraciones
+- Las reglas de archivos y colores dependen de APIs del navegador.
+- selectRadio() y selectCheckBox() trabajan con elementos HTMLInputElement.
+- Las reglas deben recibir valores y parámetros compatibles con sus definiciones.
+- Algunas configuraciones inválidas pueden provocar errores.
+- jsVali es una instancia compartida. Utiliza new Vali() cuando necesites estados independientes.
 
-- isBoolean: Checks that the value is a boolean (true or false). It also allows you to check if the value is equal to a specific boolean.
+## Autor
+### Ayron Developer
+- GitHub: https://github.com/AyronDeveloper/vali-js
+- Sitio web: https://vali.ayrondeveloper.com/
 
-```javascript
-vali.formVali(true,["isBoolean"])
-// o
-vali.formVali(true,["isBoolean|true"]) // success
-// o
-vali.formVali(true,["isBoolean|false"]) // fail
-```
-
-------------
-
-- lenMin: Checks that the length of the value is greater than or equal to a specified minimum.
-
-```javascript
-const select=document.getElementById("select")
-
-vali.formVali(select.value,["lenMin|10"])
-```
-
-------------
-
-- lenMax: Checks that the length of the value is less than or equal to a specified maximum.
-
-```javascript
-const select=document.getElementById("select")
-
-vali.formVali(select.value,["lenMax|5"])
-```
-
-------------
-
-- isArray: Checks that the value is an array. You can also check the minimum or maximum number of elements in the array.
-
-```javascript
-vali.formVali([1,2,3,4,5],["isArray"])
-// o 
-vali.formVali([1,2,3,4,5],["isArray|min|5"]) // mínimo
-// o
-vali.formVali([1,2,3,4,5],["isArray|max|5"]) // máximo
-```
-
-------------
-
-- differentTo: Checks that the value is different from a specified value.
-
-```javascript
-const input=document.getElementById("input")
-
-vali.formVali(input.value,["differentTo|default"])
-```
-
-------------
-
-- equalTo: Checks that the value is equal to a specified value.
-
-```javascript
-const input=document.getElementById("input")
-
-vali.formVali(input.value,["equalTo|password"])
-```
-
-------------
-
-- isEmail: Verifies that the value is a valid email address.
-
-```javascript
-const input=document.getElementById("input")
-
-vali.formVali(input.value,["isEmail"])
-```
-
-------------
-
-- validatedDate: Verifies that the value is a valid date in YYYY-MM-DD format.
-
-```javascript
-const date=document.getElementById("date")
-
-vali.formVali(date.value,["valitedDate"])
-```
-
-------------
-
-- uploadFile: Verifies that a file has been selected and that it belongs to the File or FileList class.
-
-```javascript
-const file=document.getElementById("file")
-
-vali.formVali(e.target.files[0],["uploadFile"])
-//o
-vali.formVali(file.files,["uploadFile"])
-```
-
-------------
-
-- sizeFile: Checks that the file size is within the specified limits. Allows you to specify whether the size should be minimum or maximum and the unit of measurement (KB).
-
-```javascript
-const file=document.getElementById("file")
-
-vali.formVali(e.target.files[0],["sizeFile|min|1|KB"])
-//es lo mismo solo que uno esta con KB
-vali.formVali(e.target.files[0],["sizeFile|min|1024"])
-//o
-vali.formVali(e.target.files[0],["sizeFile|max|2|KB"])
-//es lo mismo solo que uno esta con KB
-vali.formVali(e.target.files[0],["sizeFile|max|2048"])
-```
-
-------------
-
-- typeFile: Verifies that the MIME type of the file is one of the allowed types.
-
-```javascript
-const file=document.getElementById("file")
-
-vali.formVali(e.target.files[0],["typeFile|image/jpeg|image/png"])
-//o
-vali.formVali(file.files,["typeFile|image/jpeg|image/png"])
-```
-
-------------
-
-- isURL: Verifies that the value is a valid URL.
-
-```javascript
-const input=document.getElementById("input")
-
-vali.formVali(input.value,["isURL"])
-```
-
-------------
-
-- notUse: Checks that the value does not contain any characters from a specified list.
-
-```javascript
-const input=document.getElementById("input")
-
-vali.formVali(input.value,["notUse|áéíóú0123456789ÁÉÍÓÚ"])
-```
-
-------------
-
-- isColor: Verifies that the value is a valid color in hexadecimal format (#FFFFFF).
-
-```javascript
-const input=document.getElementById("input")
-
-vali.formVali(input.value,["isColor"])
-```
-
-------------
+## Licencia
+Este proyecto está bajo la licencia MIT.

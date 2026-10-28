@@ -1,43 +1,43 @@
 {
     "name": "js-vali",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Una libreria creada para validar formularios con JavaScript",
     "main": "./src/js-vali.es.js",
     "module": "./src/js-vali.es.js",
     "types": "./types/js-vali/index.d.ts",
     "exports": {
-      ".": {
-        "types": "./types/js-vali/index.d.ts",
-        "import": "./src/js-vali.es.js",
-        "default": "./src/js-vali.es.js"
-      },
-      "./browser": "./dist/js-vali.min.js",
-      "./package.json": "./package.json"
+        ".": {
+            "types": "./types/js-vali/index.d.ts",
+            "import": "./src/js-vali.es.js",
+            "default": "./src/js-vali.es.js"
+        },
+        "./browser": "./dist/js-vali.min.js",
+        "./package.json": "./package.json"
     },
     "browser": "./dist/index.min.js",
     "files": [
-      "src/js-vali.es.js",
-      "dist",
-      "types/js-vali",
-      "README.md"
+        "src/js-vali.es.js",
+        "dist",
+        "types/js-vali",
+        "README.md"
     ],
     "keywords": [
-      "validation",
-      "rules",
-      "forms",
-      "javascript",
-      "typescript",
-      "vali-js",
-      "js-vali"
+        "validation",
+        "rules",
+        "forms",
+        "javascript",
+        "typescript",
+        "vali-js",
+        "js-vali"
     ],
     "author": "Ayron Developer",
     "license": "MIT",
     "repository": {
-      "type": "git",
-      "url": "https://github.com/AyronDeveloper/vali-js.git"
+        "type": "git",
+        "url": "git+https://github.com/AyronDeveloper/vali-js.git"
     },
     "bugs": {
-      "url": "https://github.com/AyronDeveloper/vali-js/issues"
+        "url": "https://github.com/AyronDeveloper/vali-js/issues"
     },
     "homepage": "https://vali.ayrondeveloper.com/"
 }
