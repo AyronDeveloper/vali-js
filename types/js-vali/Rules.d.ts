@@ -1,0 +1,33 @@
+import { default as CheckBoxParams } from './types/CheckBoxParams';
+import { default as DifferentToParams } from './types/DifferentToParams';
+import { default as EqualToParams } from './types/EqualToParams';
+import { default as LenMaxParams } from './types/LenMaxParams';
+import { default as LenMinParams } from './types/LenMinParams';
+import { default as NotUserParams } from './types/NotUseParams';
+import { default as SizeFileParams } from './types/SizeFileParams';
+import { default as TypeFileParams } from './types/TypeFileParams';
+declare class Rules {
+    static required(value: any): boolean;
+    static isString(value: unknown): value is string;
+    static isAlpha(value: unknown): boolean;
+    static selectRadio(radios: NodeListOf<HTMLInputElement> | HTMLInputElement[]): boolean;
+    static selectCheckBox(boxes: NodeListOf<HTMLInputElement> | HTMLInputElement[], params?: CheckBoxParams): boolean;
+    static isNumber(value: unknown): boolean;
+    static isInteger(value: unknown): boolean;
+    static isDecimal(value: unknown): boolean;
+    static isBoolean(value: unknown): boolean;
+    static lenMin(value: any, params: LenMinParams): boolean;
+    static lenMax(value: any, params: LenMaxParams): boolean;
+    static isArray(value: unknown): value is any[];
+    static differentTo(value: unknown, params: DifferentToParams): boolean;
+    static equalTo(value: unknown, params: EqualToParams): boolean;
+    static isEmail(value: unknown): boolean;
+    static valitedDate(value: unknown): boolean;
+    static uploadFile(value: unknown): boolean;
+    static sizeFile(value: unknown, params: SizeFileParams): boolean;
+    static typeFile(value: unknown, params: TypeFileParams): boolean;
+    static isURL(value: unknown): boolean;
+    static notUse(value: unknown, params: NotUserParams): boolean;
+    static isColor(value: unknown): boolean;
+}
+export default Rules;

@@ -1,14 +1,34 @@
 {
     "name": "js-vali",
-    "version": "1.2.1",
+    "version": "2.0.0",
     "description": "Una libreria creada para validar formularios con JavaScript",
-    "main": "src/index.js",
-    "types": "types/index.d.ts",
+    "main": "./src/js-vali.es.js",
+    "module": "./src/js-vali.es.js",
+    "types": "./types/js-vali/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./types/js-vali/index.d.ts",
+        "import": "./src/js-vali.es.js",
+        "default": "./src/js-vali.es.js"
+      },
+      "./browser": "./dist/js-vali.min.js",
+      "./package.json": "./package.json"
+    },
+    "browser": "./dist/index.min.js",
+    "files": [
+      "src/js-vali.es.js",
+      "dist",
+      "types/js-vali",
+      "README.md"
+    ],
     "keywords": [
       "validation",
+      "rules",
       "forms",
       "javascript",
-      "vali-js"
+      "typescript",
+      "vali-js",
+      "js-vali"
     ],
     "author": "Ayron Developer",
     "license": "MIT",
